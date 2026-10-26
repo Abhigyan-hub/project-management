@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>SS Overseas — Student feedback and interest</title>
+  <style>
+    @page { size: A4; margin: 0; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: "Segoe UI", "Trebuchet MS", sans-serif;
+      color: #1c2834;
+      background: #e7eeec;
+    }
+    .sheet {
+      width: 210mm;
+      height: 297mm;
+      margin: 0 auto;
+      background: #f7f5f1;
+      padding: 11mm 12mm 9mm;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #0d4f56;
+      color: white;
+      border-radius: 14px;
+      padding: 12px 16px;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: #f4a261;
+      color: #0d4f56;
+      font-weight: 800;
+      font-size: 16px;
+      display: grid;
+      place-items: center;
+      letter-spacing: -0.04em;
+    }
+    .org { margin: 0; font-size: 15px; font-weight: 700; letter-spacing: 0.01em; }
+    .prog { margin: 2px 0 0; font-size: 11.5px; color: #d5ecea; }
+    .pill {
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 11px;
+      font-weight: 650;
+      color: #fff8ef;
+    }
+    h1 {
+      margin: 2px 0 0;
+      font-size: 22px;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      color: #12343a;
+    }
+    .lede {
+      margin: 0;
+      font-size: 12px;
+      line-height: 1.4;
+      color: #4d5d66;
+    }
+    section {
+      background: white;
+      border-radius: 14px;
+      padding: 11px 13px 12px;
+      border: 1px solid #e4e0d8;
+    }
+    section.follow {
+      background: #fff8f2;
+      border-color: #f3d7c2;
+    }
+    .section-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    h2 {
+      margin: 0;
+      font-size: 14px;
+      letter-spacing: -0.02em;
+      color: #0d4f56;
+    }
+    .tag {
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #c56a2d;
+    }
+    .row { display: flex; gap: 14px; margin-bottom: 8px; }
+    .field { flex: 1; min-width: 0; }
+    .field span, .q-label {
+      display: block;
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #5c6b73;
+      margin-bottom: 3px;
+    }
+    .line {
+      border-bottom: 1.5px solid #8aa0a3;
+      height: 18px;
+    }
+    .q { margin: 0 0 7px; }
+    .q-label { margin-bottom: 4px; color: #24343c; font-size: 11.5px; }
+    .opts { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; }
+    .opt {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11.5px;
+      line-height: 1;
+      color: #24343c;
+      white-space: nowrap;
+    }
+    .box {
+      width: 11px;
+      height: 11px;
+      border: 1.5px solid #0d4f56;
+      border-radius: 3px;
+      flex: none;
+      background: white;
+    }
+    .other { display: inline-flex; align-items: flex-end; gap: 6px; min-width: 150px; }
+    .other .line { width: 110px; height: 14px; }
+    .notes .line { height: 18px; margin-top: 2px; }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px 16px;
+      margin-bottom: 7px;
+    }
+    .consent {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      background: white;
+      border-radius: 10px;
+      padding: 8px 10px;
+      border: 1px solid #f0d3bc;
+      font-size: 11px;
+      line-height: 1.35;
+    }
+    footer {
+      margin-top: auto;
+      font-size: 9.5px;
+      line-height: 1.35;
+      color: #6a777e;
+    }
+    footer strong { color: #0d4f56; }
+  </style>
+</head>
+<body>
+  <article class="sheet">
+    <header>
+      <div class="brand">
+        <div class="mark">SS</div>
+        <div>
+          <p class="org">SS Overseas Consultancy</p>
+          <p class="prog">Nursing Career Awareness Programme</p>
+        </div>
+      </div>
+      <div class="pill">About 2 minutes</div>
+    </header>
+
+    <h1>How was today — and what would you like next?</h1>
+    <p class="lede">Start with a few ticks about the session. The second part is only if you want guidance on Germany, the Philippines, or the steps in between. Feedback alone is welcome.</p>
+
+    <section>
+      <div class="section-head">
+        <h2>1. How the session felt</h2>
+        <span class="tag">About one minute</span>
+      </div>
+      <div class="row">
+        <div class="field">
+          <span>Student name (optional)</span>
+          <div class="line"></div>
+        </div>
+        <div class="field">
+          <span>College</span>
+          <div class="line"></div>
+        </div>
+      </div>
+      <div class="field" style="margin-bottom: 8px;">
+        <span>Course / year (optional)</span>
+        <div class="line"></div>
+      </div>
+
+      <div class="q">
+        <span class="q-label">How would you rate today’s seminar?</span>
+        <div class="opts">
+          <span class="opt"><i class="box"></i> Excellent</span>
+          <span class="opt"><i class="box"></i> Good</span>
+          <span class="opt"><i class="box"></i> Average</span>
+          <span class="opt"><i class="box"></i> Needs improvement</span>
+          <span class="opt"><i class="box"></i> Poor</span>
+        </div>
+      </div>
+      <div class="q">
+        <span class="q-label">Were the opportunities and processes explained clearly?</span>
+        <div class="opts">
+          <span class="opt"><i class="box"></i> Very clear</span>
+          <span class="opt"><i class="box"></i> Clear</span>
+          <span class="opt"><i class="box"></i> Somewhat clear</span>
+          <span class="opt"><i class="box"></i> Not very clear</span>
+        </div>
+      </div>
+      <div class="q">
+        <span class="q-label">How useful was this seminar for your future planning?</span>
+        <div class="opts">
+          <span class="opt"><i class="box"></i> Very useful</span>
+          <span class="opt"><i class="box"></i> Somewhat useful</span>
+          <span class="opt"><i class="box"></i> Not sure</span>
+          <span class="opt"><i class="box"></i> Not useful</span>
+        </div>
+      </div>
+      <div class="q">
+        <span class="q-label">Which topic would you like to know more about?</span>
+        <div class="opts">
+          <span class="opt"><i class="box"></i> Germany</span>
+          <span class="opt"><i class="box"></i> Philippines</span>
+          <span class="opt"><i class="box"></i> Language preparation</span>
+          <span class="opt"><i class="box"></i> Eligibility</span>
+          <span class="opt"><i class="box"></i> Costs</span>
+          <span class="opt"><i class="box"></i> Visa / application</span>
+          <span class="opt other"><i class="box"></i> Other <span class="line"></span></span>
+        </div>
+      </div>
+      <div class="q notes" style="margin-bottom: 0;">
+        <span class="q-label">What could we improve or explain better?</span>
+        <div class="line"></div>
+        <div class="line"></div>
+      </div>
+    </section>
+
+    <section class="follow">
+      <div class="section-head">
+        <h2>2. Want a personal follow-up?</h2>
+        <span class="tag">Optional — skip if you like</span>
+      </div>
+      <div class="row">
+        <div class="field">
+          <span>Full name</span>
+          <div class="line"></div>
+        </div>
+        <div class="field">
+          <span>Mobile</span>
+          <div class="line"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <span>College</span>
+          <div class="line"></div>
+        </div>
+        <div class="field">
+          <span>Course / year</span>
+          <div class="line"></div>
+        </div>
+      </div>
+      <div class="q">
+        <span class="q-label">Current status</span>
+        <div class="opts">
+          <span class="opt"><i class="box"></i> Studying</span>
+          <span class="opt"><i class="box"></i> Final year</span>
+          <span class="opt"><i class="box"></i> Graduated</span>
+        </div>
+      </div>
+      <div class="q">
+        <span class="q-label">Country of interest</span>
+        <div class="opts">
+          <span class="opt"><i class="box"></i> Germany</span>
+          <span class="opt"><i class="box"></i> Philippines</span>
+          <span class="opt"><i class="box"></i> Both</span>
+          <span class="opt"><i class="box"></i> Not decided</span>
+        </div>
+      </div>
+      <div class="q">
+        <span class="q-label">What would you like guidance on?</span>
+        <div class="grid">
+          <span class="opt"><i class="box"></i> Nursing education</span>
+          <span class="opt"><i class="box"></i> Language preparation</span>
+          <span class="opt"><i class="box"></i> Vocational training</span>
+          <span class="opt"><i class="box"></i> Eligibility / qualifications</span>
+          <span class="opt"><i class="box"></i> Employment after qualification</span>
+          <span class="opt"><i class="box"></i> Costs and application process</span>
+        </div>
+      </div>
+      <div class="q">
+        <span class="q-label">Preferred contact</span>
+        <div class="opts">
+          <span class="opt"><i class="box"></i> WhatsApp</span>
+          <span class="opt"><i class="box"></i> Phone call</span>
+          <span class="opt"><i class="box"></i> Email</span>
+        </div>
+      </div>
+      <div class="q">
+        <span class="q-label">Preferred counselling</span>
+        <div class="opts">
+          <span class="opt"><i class="box"></i> In person</span>
+          <span class="opt"><i class="box"></i> Online</span>
+          <span class="opt"><i class="box"></i> Phone</span>
+        </div>
+      </div>
+      <div class="field" style="margin-bottom: 8px;">
+        <span>Convenient time to contact</span>
+        <div class="line"></div>
+      </div>
+      <div class="consent">
+        <i class="box"></i>
+        <span>Please contact me about the opportunities and guidance I selected. I understand this is a request for information, not a promise of admission, a job, a visa, or a scholarship.</span>
+      </div>
+    </section>
+
+    <footer>
+      <strong>Thank you.</strong> Part 1 does not sign you up for a call. Your details are used only to respond to a request you make, and handled according to the privacy notice shared at the session.
+    </footer>
+  </article>
+</body>
+</html>

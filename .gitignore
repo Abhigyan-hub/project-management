@@ -1,0 +1,15 @@
+node_modules
+dist
+dist-ssr
+*.local
+.env
+.env.*
+!.env.example
+.DS_Store
+
+# Keep database schemas, migrations, and local database files out of Git.
+*.sql
+*.db
+*.sqlite
+*.sqlite3
+*.dump
