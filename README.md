@@ -1,109 +1,56 @@
-# Northlight — React + TypeScript + Supabase
+# Northlight Project Control
 
-Plain **React 19 + TypeScript + Vite** app, with **React Router** for routing
-and **Supabase** (Postgres, Auth, Storage) as the backend.
+A single-organization project and team workspace built with MongoDB, Express, React, and Node.js. The code is organized as an npm workspace: `frontend/` contains the React app and `backend/` contains the Express API and MongoDB models.
 
-## What changed from the original
+## What the workspace supports
 
-| Original (TanStack Start) | This build |
-| --- | --- |
-| File-based routing (`src/routes/*.tsx`), SSR shell, `head()` meta | `react-router-dom` `<Routes>` in `src/App.tsx`, plain pages in `src/pages/`, `useDocumentTitle()` hook for `<title>` |
-| `@tanstack/react-start` server functions (`*.functions.ts`) | Removed — profile creation is a Postgres trigger; admin promotion is the `claim_admin_access` function |
-| Supabase Postgres + Auth + Storage | `supabase/migrations/20261019100000_northlight.sql`, client in `src/lib/supabase.ts` |
-| `vite.config.ts` (Lovable/TanStack Start preset, Nitro) | Plain Vite config: `@vitejs/plugin-react` + `@tailwindcss/vite` |
+- Organization roles: super admin, admin, team leader, and member.
+- Invite-only accounts. The first super admin is created from server environment settings; admins and super admins invite later users.
+- Projects assigned to teams, with per-project GitHub, Vercel, and backend links visible to admins and the responsible team leader.
+- Task tracking, progress submissions, activity history, and notifications.
+- Lifetime credit ledger: completed tasks earn 1/2/3/5 points for low/medium/high/critical priority. Teammates can commend each other once per calendar month with a reason. Credits are limited to 120% of the highest-scoring other teammate; initial scores can start when the team is at zero. Admin corrections are audited.
 
-Everything else — the ~35 shadcn/ui components, Tailwind design tokens
-(`src/styles.css`), business logic in `lib/workspace.ts` / `lib/analytics.ts`
-/ `lib/mutations.ts`, and the page components themselves — kept the exact
-same function signatures and prop shapes, so the conversion is a swap of the
-data layer, not a rewrite of the UI.
+Credits are supporting evidence for human recognition and appraisal discussions. They do not determine appraisal outcomes automatically.
 
-## Scope of this conversion
+## Local setup
 
-All 13 routes from the original app are now fully wired to the mock data
-layer — every sidebar destination is a real, working page, not a stub:
+Requirements: Node.js 20.19 or newer and MongoDB Atlas or a local replica set. Credit cap enforcement uses MongoDB transactions.
 
-- **Landing page** (`/`)
-- **Team sign in / sign up** (`/auth`)
-- **Admin sign in / registration** (`/admin-login`) — any account (admin or
-  team member) can sign in here and is routed to the right workspace
-- **Dashboard** (`/dashboard`) — KPIs, charts, activity timeline (admin/super admin)
-- **Tasks** (`/tasks`) — filter, search, create/edit, approve/reject, delete, CSV/PDF export, quick reassignment, WhatsApp-style tick progress (✓ assigned → ✓✓ in progress → ✓✓ blue completed), and a bulk "toolkit" toolbar (checkbox multi-select → admin confirm / set due date) (admin/super admin/team leader)
-- **Projects** (`/projects`) — portfolio table with create/edit/delete (name, description, client, category, priority, start date, deadline) and cascading delete of a project's tasks (admin/super admin)
-- **People** (`/people`) — directory with add/edit/deactivate/delete and team assignment (admin/super admin)
-- **User management** (`/users`) — change a person's role or active status, or delete their account (admin/super admin)
-- **Teams** (`/teams`) — create/edit/delete teams, assign a team leader, add members (admin/super admin)
-- **Calendar** (`/calendar`) — task due dates and project deadlines on a day picker (admin/super admin/team leader)
-- **Reports** (`/reports`) — org-wide metrics plus CSV/PDF export for projects, tasks, people and activity history (admin/super admin)
-- **Activity history** (`/history`) — full audit trail with search and filters, CSV export (admin/super admin/team leader)
-- **My team** (`/team`) — a team leader's members, their tasks and pending task-approval requests (team leader)
-- **My work** (`/my-work`) — a member's assigned tasks and a "Upload work" flow to submit progress updates with GitHub/live links and screenshots (member)
+1. Copy `.env.example` to `.env` and set `MONGO_URI`, a private `JWT_SECRET` of at least 32 characters, and bootstrap super admin email/password.
+2. From the repository root, install both workspace packages with `npm install`.
+3. In one terminal run `npm run dev:api`; in another run `npm run dev`.
+4. Open `http://localhost:5173`. Sign in with the bootstrap super admin account. Invite users from People; they set their own password using the invitation email.
 
-Every page follows the same pattern established by the original four:
-`AuthGate` for role gating, `AppShell` for the page chrome, `@tanstack/react-query`
-against `fetchWorkspace()` / `fetchOrganisationData()` for reads, and the
-mutation helpers in `src/lib/mutations.ts` (all backed by Supabase)
-for writes.
+The app uses a new, empty MongoDB database. Existing Supabase data is not migrated. Do not use demo credentials in production.
 
-## Getting started
+## Production deployment
 
-1. Create a Supabase project.
-2. In the SQL editor, run `supabase/migrations/20261019100000_northlight.sql`.
-3. In Authentication → Providers → Email, turn **off** "Confirm email" so sign-up returns a session immediately.
-4. Copy `.env.example` to `.env` and fill in the project URL, anon key, and service role key.
-5. Install, seed the demo organisation, and start the app:
+### MongoDB Atlas
 
-```bash
-npm install
-npm run seed
-npm run dev
-```
+Create an Atlas database and a least-privilege database user for the API. Restrict network access to the API host where possible. Use the Atlas connection string as `MONGO_URI`. Atlas runs as a replica set, which the credit ledger uses for atomic cap enforcement.
 
-Then open the printed local URL (usually `http://localhost:5173`).
+### Render API
 
-## Demo accounts
+Create a Render web service from this repository with the repository root as its root directory. Use Node as the runtime, set the build command to `npm install`, and the start command to `npm start`. The root npm workspace command starts the API in `backend/`. Configure all server values from `.env.example` in Render's environment settings. Set `NODE_ENV=production`, `MONGO_URI`, `JWT_SECRET`, bootstrap admin values, `APP_BASE_URL` to the Vercel site URL, `WEB_ORIGIN` to that same URL, and email and Cloudinary credentials. Never commit `.env` or production credentials.
 
-`npm run seed` creates nine people across four roles. Password for every
-seeded account is **`password123`**.
+The API provides `/api/health` for service checks. Uploaded work screenshots are private Cloudinary assets and require signed URLs.
 
-| Email | Role |
-| --- | --- |
-| `priya.super@northlight.io` | Super admin |
-| `marcus.admin@northlight.io` | Admin |
-| `aisha.admin@northlight.io` | Admin |
-| `elena.lead@northlight.io` | Team leader |
-| `sam.lead@northlight.io` | Team leader |
-| `noah.member@northlight.io` | Member |
-| `grace.member@northlight.io` | Member |
-| `diego.member@northlight.io` | Member |
-| `hana.member@northlight.io` | Member (inactive) |
+### Vercel frontend
 
-Sign in with **any account** at `/admin-login` — super admin and admin
-accounts land on the dashboard, while team leader and member accounts are
-automatically recognized and redirected to their own workspace ("My team" /
-"My work") instead of being blocked. The `/auth` team portal still works the
-same way for team leaders and members.
+Import this repository into Vercel with the repository root as its root directory. Set the framework to Vite and use `npm run build`; `vercel.json` points Vercel to `frontend/dist`. Before deploying, edit `vercel.json` and replace the documented Render API host with your actual Render service host. The `/api` rewrite keeps authentication cookies same-origin. Set the same site as `APP_BASE_URL` and `WEB_ORIGIN` in Render.
 
-Self-registering a new account from `/admin-login` ("Create admin ID") grants
-admin access immediately — no invite code required.
+For local development, run `npm run dev:api` and `npm run dev` from the repository root. Vite in `frontend/` proxies `/api` to `http://localhost:4000`.
 
-## Data persistence
+## Roles
 
-Projects, tasks, people, teams, notifications, activity, and progress
-updates live in Supabase Postgres. Sign-in uses Supabase Auth. A trigger on
-`auth.users` creates a `profiles` row and a `member` role. Accounts created
-from the admin portal call `claim_admin_access()`, which promotes that user
-to admin. Screenshot uploads go to the private `work-screenshots` bucket.
+- **Super admin:** organization-wide access, role administration, project change reviews, and credit corrections.
+- **Admin:** manage projects, teams, people, and user access; view organization reporting and correct credits.
+- **Team leader:** view assigned team projects, project service links, team tasks, and team credit records.
+- **Member:** view assigned work, submit progress, and commend teammates.
 
-Row Level Security:
+New users cannot self-register or elevate their own role. Invitation and password reset emails require `SMTP_URL` in production.
 
-- Anyone signed in can read the organisation directory, projects, and tasks.
-- Admins and super admins can create and edit projects, teams, and people.
-- Team leaders can create, update, and delete tasks.
-- Members can update tasks assigned to them and submit progress updates.
-- Notifications are visible only to the recipient.
+## Important environment values
 
-## Notes
+See `.env.example` for the complete list. Keep all secrets on the API host. The frontend does not need MongoDB, JWT, SMTP, or Cloudinary secrets.
 
-- CSV/PDF export (`src/lib/reports.ts`) stays in the browser.
-- Re-running `npm run seed` updates the same demo rows; it does not wipe accounts you created yourself.

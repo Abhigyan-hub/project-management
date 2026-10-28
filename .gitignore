@@ -9,6 +9,7 @@ dist-ssr
 
 # Keep database schemas, migrations, and local database files out of Git.
 *.sql
+!supabase/migrations/20261027100000_team_credits.sql
 *.db
 *.sqlite
 *.sqlite3
